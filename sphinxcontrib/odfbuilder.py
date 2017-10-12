@@ -1,5 +1,5 @@
 from sphinx.builders import Builder
-from .builders.odf import OdfBuilder
+from .builders.odfb import OdfBuilder
 
 
 def setup(app):
