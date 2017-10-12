@@ -1,12 +1,15 @@
 from sphinx.builders import Builder
+from sphinx.util.osutil import ensuredir
 
 from odf.opendocument import OpenDocumentText
 from odf.text import P
 
+from os import path
+
 class OdfBuilder(Builder):
   name = 'odf'
   format = 'odf'
-  file_suffix = '.odf'
+  file_suffix = '.odt'
   link_suffix = '' # defaults to file_suffix
 
   def get_outdated_docs(self):
@@ -47,8 +50,14 @@ class OdfBuilder(Builder):
   def link_transform(self,docname):
     return docname + self.link_suffix
 
+  # Function to convert the docname to a reST file name.
+  def file_transform(self,docname):
+    return docname + self.file_suffix
+
   def write_doc(self, docname, doctree):
+    outfilename = path.join(self.outdir, self.file_transform(docname))
+    ensuredir(path.dirname(outfilename))
     textdoc = OpenDocumentText()
     p = P(text="Hello World!")
     textdoc.text.addElement(p)
-    textdoc.save(docname, True)
+    textdoc.save(outfilename, True)
