@@ -1,4 +1,4 @@
 from sphinx.builders import Builder
 
 def setup(app):
-  app.add_builder(OdfBuilder)
+  app.require_sphinx('1.0')

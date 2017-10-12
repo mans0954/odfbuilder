@@ -12,4 +12,4 @@ import pbr.version
 
 
 __version__ = pbr.version.VersionInfo(
-    'odfbuilder').version_string()
+    'sphinxcontrib-odfbuilder').version_string()
