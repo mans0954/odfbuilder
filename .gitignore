@@ -45,3 +45,5 @@ ChangeLog
 *~
 .*.swp
 .*sw?
+
+test-doc/_build/
