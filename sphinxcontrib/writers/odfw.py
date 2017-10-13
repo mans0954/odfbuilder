@@ -11,12 +11,6 @@ class OdtWriter(odf_odt.Writer):
 #        self.translator_class = OdtTranslator
 
     def translate(self):
-        print "CSH Printing doc\n"
-        print self.document
-        print "CSH printing settings\n"
-        print self.document.settings
-#        print self.document.settings.odf_config_file
-        print "CSH Done\n"
         self.document.settings.odf_config_file=None
         self.document.settings.create_links=None
         self.document.settings.create_sections=None
