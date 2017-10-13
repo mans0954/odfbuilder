@@ -1,10 +1,12 @@
 from sphinx.builders import Builder
 from sphinx.util.osutil import ensuredir
 
-from odf.opendocument import OpenDocumentText
-from odf.text import P
+from docutils.io import StringOutput
 
+import codecs
 from os import path
+
+from ..writers.odfw import OdtWriter
 
 class OdfBuilder(Builder):
   name = 'odf'
@@ -41,7 +43,7 @@ class OdfBuilder(Builder):
 
 
   def prepare_writing(self, docnames):
-    pass
+    self.writer = OdtWriter(self)
 
   def get_target_uri(self, docname, typ=None):
     return self.link_transform(docname)
@@ -55,9 +57,15 @@ class OdfBuilder(Builder):
     return docname + self.file_suffix
 
   def write_doc(self, docname, doctree):
+    destination = StringOutput(encoding='utf-8')
+    self.writer.write(doctree,destination)
     outfilename = path.join(self.outdir, self.file_transform(docname))
     ensuredir(path.dirname(outfilename))
-    textdoc = OpenDocumentText()
-    p = P(text="Hello World!")
-    textdoc.text.addElement(p)
-    textdoc.save(outfilename, True)
+    try:
+            f = codecs.open(outfilename, 'w', 'utf-8')
+            try:
+                f.write(self.writer.output)
+            finally:
+                f.close()
+    except (IOError, OSError) as err:
+      self.warn("error writing file %s: %s" % (outfilename, err))
