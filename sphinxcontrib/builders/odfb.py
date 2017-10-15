@@ -10,8 +10,8 @@ from os import path
 from ..writers.odfw import OdtWriter
 
 class OdfBuilder(Builder):
-  name = 'odf'
-  format = 'odf'
+  name = 'odt'
+  format = 'odt'
   file_suffix = '.odt'
   link_suffix = '' # defaults to file_suffix
 
