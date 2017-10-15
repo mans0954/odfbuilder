@@ -10,6 +10,8 @@ Welcome to test-rest's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   page1
+
 
 
 Indices and tables
