@@ -1,15 +1,10 @@
 from sphinx.builders import Builder
-from sphinx.util.osutil import ensuredir
 
-#from docutils.io import StringOutput
-from docutils import frontend, io
-from docutils.core import publish_from_doctree
-from docutils.core import *
+from docutils import io
 from docutils.core import Publisher
-from docutils.writers.odf_odt import Writer, Reader
+from docutils.writers.odf_odt import Writer
 import docutils.readers.doctree
 
-import codecs
 from os import path
 
 from ..writers.odfw import OdtWriter
@@ -65,78 +60,23 @@ class OdfBuilder(Builder):
   def write_doc(self, docname, doctree):
     outfilename = path.join(self.outdir, self.file_transform(docname))
 
-#def publish_programmatically(source_class, source, source_path,
-#                             destination_class, destination, destination_path,
-#                             reader, reader_name,
-#                             parser, parser_name,
-#                             writer, writer_name,
-#                             settings, settings_spec,
-#                             settings_overrides, config_section,
-#                             enable_exit_status):   
 
-    source_class=io.DocTreeInput
-    source=io.DocTreeInput(doctree)
-    source_path=None
-    destination_class=io.BinaryFileOutput
-    destination=None
-    destination_path=outfilename
-    reader=None
-    reader_name='standalone'
-    parser=None
-    parser_name='restructuredtext'
+    reader = docutils.readers.doctree.Reader(parser_name='null')
+    #Note, want to use our OdtWriter class here - but it doesn't work yet
     writer = Writer()
-    writer_name='pseudoxml'
-    settings=None
+    
+    pub = Publisher(reader, None, writer, settings=None,
+                    source=io.DocTreeInput(doctree),
+                    destination_class=io.BinaryFileOutput)
+
     settings_spec=None
     settings_overrides={'output_encoding': 'unicode'}
     config_section=None
-    enable_exit_status=False
-
-    reader = docutils.readers.doctree.Reader(parser_name='null')
-    pub = Publisher(reader, None, writer, settings=settings,
-                    source=source,
-                    destination_class=destination_class)
-#    if not writer and writer_name:
-#        pub.set_writer(writer_name)
-#    pub.set_components(reader_name, parser_name, writer_name)
     pub.process_programmatic_settings(
         settings_spec, settings_overrides, config_section)
-#    pub.set_source(source, source_path)
+    destination=None
+    destination_path=outfilename
     pub.set_destination(destination, destination_path)
-    output = pub.publish(enable_exit_status=enable_exit_status)
+    output = pub.publish(enable_exit_status=False)
 
 
-
-#    pub = Publisher(reader, None, self.writer, None,destination_class=io.BinaryFileOutput)
-#    pub.set_components(reader_name, parser_name, writer_name)
-#    output = pub.publish(
-#        argv, usage, description, settings_spec, settings_overrides,
-#        config_section=config_section, enable_exit_status=enable_exit_status)
-#return output
-
-
-
-#   publish_cmdline_to_binary(reader=reader,
-#    pub = Publisher(reader, None, self.writer,
-#                    source=io.DocTreeInput(doctree),
-#                    destination_class=io.BinaryFileOutput, settings=None)
-#    pub.process_programmatic_settings(None, None, None)
-#    pub.set_destination(None, outfilename)
-#    pub.publish(enable_exit_status=False)
-
-
-#    output = publish_from_doctree(doctree,destination_path=outfilename,writer=self.writer,destination_class=io.BinaryFileOutput)
-#    output = pub.publish()
-
-#    destination = io.BinaryFileOutput(None,outfilename)
-#    self.writer.write(doctree,destination)
-#    self.writer.assemble_parts()
-#    ensuredir(path.dirname(outfilename))
-#    try:
-#            f = codecs.open(outfilename, 'w', 'utf-8')
-#            try:
-#                f.write(output)
-#            finally:
-#                f.close()
-#    except (IOError, OSError) as err:
-#      self.warn("error writing file %s: %s" % (outfilename, err))
