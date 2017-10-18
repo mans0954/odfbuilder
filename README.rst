@@ -36,10 +36,15 @@ python setup.py sdist
 Install
 -------
 
+    pip install --upgrade sphinx
+    wget https://github.com/mans0954/odfbuilder/releases/download/0.0.1/sphinxcontrib-odfbuilder-0.0.1.tar.gz
+    pip install sphinxcontrib-odfbuilder-0.0.1.tar.gz
+
+Uninstall
+---------
+
 ```
-pip install --upgrade sphinx
-wget https://github.com/mans0954/odfbuilder/releases/download/0.0.1/sphinxcontrib-odfbuilder-0.0.1.tar.gz
-pip install sphinxcontrib-odfbuilder-0.0.1.tar.gz
+pip uninstall sphinxcontrib-odfbuilder
 ```
 
 Links
